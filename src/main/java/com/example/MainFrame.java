@@ -1,4 +1,5 @@
 
+import java.awt.MenuBar;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -24,12 +25,25 @@ JMenuItem webcamItem = new JMenuItem("Webcam shoot");
 fileMenu.add(openItem);
 fileMenu.add(webcamItem);
 // Менюшечка (каналы)
-JMenu channeJMenu = new JMenu("Channels");
+JMenu channelJMenu = new JMenu("Channels");
 JMenuItem redItem = new JMenuItem("Red");
 JMenuItem greenItem = new JMenuItem("Green");
 JMenuItem blueItem = new JMenuItem("Blue");
-channeJMenu.add(redItem);
-channeJMenu.add(greenItem);
-channeJMenu.add(blueItem);
+channelJMenu.add(redItem);
+channelJMenu.add(greenItem);
+channelJMenu.add(blueItem);
 }
+// Менюшечка (операции)
+JMenu operationMenu = new JMenu("Operations");
+JMenuItem sharpenItem = new JMenuItem("Sharpen");
+JMenuItem rotateItem = new JMenuItem("Rotate");
+JMenuItem drawLineItem = new JMenuItem("Draw Line");
+operationMenu.add(sharpenItem);
+operationMenu.add(rotateItem);
+operationMenu.add(drawLineItem);
+
+menuBar.add(filemenu);
+menuBar.add(channelMenu);
+menuBar.add(operationMenu);
+setJmenuBar(menuBar);
 }
