@@ -1,5 +1,6 @@
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
@@ -15,12 +16,20 @@ static {
     System.load(nativePath + "/opencv_java455.dll"); // подключение OpenCV
 }
 private void initUI(){
-// Менюшечка
+// Менюшечка(изображение)
 JMenuBar menuBar = new JMenuBar();
 JMenu fileMenu = new JMenu("File");
 JMenuItem openItem = new JMenuItem("Open image");
 JMenuItem webcamItem = new JMenuItem("Webcam shoot");
 fileMenu.add(openItem);
 fileMenu.add(webcamItem);
+// Менюшечка (каналы)
+JMenu channeJMenu = new JMenu("Channels");
+JMenuItem redItem = new JMenuItem("Red");
+JMenuItem greenItem = new JMenuItem("Green");
+JMenuItem blueItem = new JMenuItem("Blue");
+channeJMenu.add(redItem);
+channeJMenu.add(greenItem);
+channeJMenu.add(blueItem);
 }
 }
