@@ -1,11 +1,15 @@
 
 import java.awt.BorderLayout;
 import java.awt.MenuBar;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 /*
@@ -15,6 +19,9 @@ import javax.swing.JScrollPane;
 
 
 public class MainFrame extends JFrame {
+    private BufferedImage currentImage;
+    private JLabel imageLabel;
+    private Mat currentMat;
 static {
     String nativePath = System.getProperty("user.dir") + "/native";
     System.load(nativePath + "/opencv_java455.dll"); // подключение OpenCV
@@ -44,7 +51,7 @@ JMenuItem blueItem = new JMenuItem("Blue");
 channelJMenu.add(redItem);
 channelJMenu.add(greenItem);
 channelJMenu.add(blueItem);
-}
+
 // Менюшечка (операции)
 JMenu operationMenu = new JMenu("Operations");
 JMenuItem sharpenItem = new JMenuItem("Sharpen");
@@ -85,6 +92,27 @@ blueItem.addActionListener(e -> showChannel(0));
 sharpenItem.addActionListener(e -> sharpemImage());
 rotateItem.addActionListener(e -> rotateImage());
 drawLineItem.addActionListener(e -> drawLine());
+}
 
+/*
+ * метод для открытия изображения с компьютера
+ */
+private void openImage() {
+    JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Image Files", 
+    "jpg", "png"));
 
+    if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+        try {
+            File file = fileChooser.getSelectedFile();
+            BufferedImage img = ImageIO.read(file);
+            currentImage = img;
+            currentMat = ImageUtils.bufferedImageToMat(img);
+            displayImage(img);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error loading image: " + ex.getMessage(),
+            "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+}
 }
