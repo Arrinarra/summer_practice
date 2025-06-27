@@ -11,6 +11,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import org.opencv.core.Mat;
 
 /*
  * нужно создать окно, в котором будет наше изображение. Для этого нужно наш класс
@@ -113,6 +114,29 @@ private void openImage() {
             JOptionPane.showMessageDialog(this, "Error loading image: " + ex.getMessage(),
             "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+}
+
+// метод для захвата изображения с вебкамеры
+private void captureFromwebcam() {
+    try {
+        WebcamPanel webcamPanel = new WebcamPanel();
+        int result = JOptionPane.showConfirmDialog(this, webcamPanel, "Capture Image",
+        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
+            BufferedImage captured = webcamPanel.getCaptureImage();
+            if (captured != null) {
+                currentImage = captured;
+                currentMat = ImageUtils.bufferedImageToMat(captured);
+                displayImage(captured);
+            }
+        }
+        webcamPanel.close();
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this,
+        "Webcam error:\n1. Check camera connection\n2. Grant camera permissions\n3." +
+        "Close other apps using camera", "Camera error", JOptionPane.ERROR_MESSAGE);
     }
 }
 }
