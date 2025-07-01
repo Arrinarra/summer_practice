@@ -1,5 +1,6 @@
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.MenuBar;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
@@ -18,7 +19,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import org.opencv.core.Mat;
 
 /*
@@ -191,6 +194,50 @@ private void showChannel(int channelIndex) {
             JOptionPane.showMessageDialog(this, "Invalid angle value", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
-}
 
+    private void drawLine() {
+        if (currentMat == null) return;
+
+        JPanel panel = new JPanel(new GridLayout(0, 2));
+        JTextField x1Field = new JTextField(5);
+        JTextField y1Field = new JTextField(5);
+        JTextField x2Field = new JTextField(5);
+        JTextField y2Field = new JTextField(5);
+        JTextField thicknessField = new JTextField(5);
+
+        panel.add(new JLabel("Start X: "));
+        panel.add(x1Field);
+        panel.add(new JLabel("Start Y:"));
+        panel.add(y1Field);
+        panel.add(new JLabel("End X:"));
+        panel.add(x2Field);
+        panel.add(new JLabel("End Y:"));
+        panel.add(y2Field);
+        panel.add(new JLabel("Thickness:"));
+        panel.add(thicknessField);
+
+        int result = JOptionPane.showConfirmDialog(this, panel, "Line parameters", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
+            try {
+                int x1 = Integer.parseInt(x1Field.getText());
+                int y1 = Integer.parseInt(y1Field.getText());
+                int x2 = Integer.parseInt(x2Field.getText());
+                int y2 = Integer.parseInt(y2Field.getText());
+                int thickness = Integer.parseInt(thicknessField.getText());
+                
+                Mat imgWithLine = currentMat.clone();
+                Imgproc.line(imgWithLine, 
+                    new Point(x1, y1), 
+                    new Point(x2, y2), 
+                    new Scalar(0, 255, 0), // Green color
+                    thickness);
+                
+                currentMat = imgWithLine;
+                displayImage(ImageUtils.matToBufferedImage(imgWithLine));
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Invalid input values", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+}
+}
