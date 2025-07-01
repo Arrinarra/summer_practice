@@ -1,15 +1,12 @@
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.MenuBar;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageProducer;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -23,6 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
+import org.opencv.core.Scalar;
 
 /*
  * нужно создать окно, в котором будет наше изображение. Для этого нужно наш класс
