@@ -1,8 +1,16 @@
 
 import java.awt.BorderLayout;
 import java.awt.MenuBar;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageProducer;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -139,4 +147,50 @@ private void captureFromwebcam() {
         "Close other apps using camera", "Camera error", JOptionPane.ERROR_MESSAGE);
     }
 }
+
+private void displayImage(BufferedImage img) {
+    imageLabel.setIcon(new ImageIcon(img));
 }
+
+private void showChannel(int channelIndex) {
+    if (currentMat == null) return;
+
+    List<Mat> channels = new ArrayList<>();
+    org.opencv.core.Core.split(currentMat, channels);
+
+    MAt result = new Mat();
+    Mat empty = Mat.zeros(channels.get(0).size(), channels.get(0).type());
+
+    switch (channelIndex) {
+        case 0: // Blue
+            org.opencv.core.Core.merge(Arrays.asList(channels.get(0), empty, empty), result);
+            break;
+        case 1: // Green
+            org.opencv.core.Core.merge(Arrays.asList(empty, empty, channels.get(2)), result);
+            break;
+        }
+        
+        displayImage(ImageUtils.matToBufferedImage(result));
+        
+    }
+
+    private void rotateImage() {
+        String input = JOptionPane.showInputDialog(this, "Enter rotation angle (degrees): ");
+        if (input == null) return;
+
+        try {
+            double angle = Double.parseDouble(input);
+            Point center = new Point(currentMat.cols()/2, currentMat.rows()/2);
+            Mat rotationMatrix = Imgproc.getRotationMatrix2D(center, angle, 1.0);
+
+            Mat rotated = new Mat();
+            Imgproc.warpAffine(currentMat, rotated, rotationMatrix, currentMat.size());
+            currentMat = rotated;
+            displayImage(ImageUtils.matToBufferedImage(rotated));
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid angle value", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+}
+
