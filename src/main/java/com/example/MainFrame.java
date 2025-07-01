@@ -65,7 +65,7 @@ operationMenu.add(drawLineItem);
 menuBar.add(filemenu);
 menuBar.add(channelMenu);
 menuBar.add(operationMenu);
-setJmenuBar(menuBar);
+setJMenuBar(menuBar);
 
 // Панель изображения (экран -> панель(типа матрешки))
 imageLabel = new JLabel();
@@ -90,7 +90,7 @@ greenItem.addActionListener(e -> showChannel(1));
 blueItem.addActionListener(e -> showChannel(0));
 
 // обработка операций варианта 10
-sharpenItem.addActionListener(e -> sharpemImage());
+sharpenItem.addActionListener(e -> sharpenImage());
 rotateItem.addActionListener(e -> rotateImage());
 drawLineItem.addActionListener(e -> drawLine());
 }
